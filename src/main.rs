@@ -1,20 +1,17 @@
-use std::env;
-use std::fs;
+use std::{env, process};
+
+use minigrep::{Config, run};
 
 fn main() {
-    let args: Vec<String> =  env::args().collect();
+    let args: Vec<String> = env::args().collect();
 
-    let Some(search_string) = args.get(1) else {
-        return eprintln!("Please provide a search string as the first argument");
+    let config = Config::build(&args).unwrap_or_else(|err| {
+        eprintln!("{err}");
+        process::exit(1);
+    });
+
+    if let Err(err) = run(config) {
+        eprintln!("{err}");
+        process::exit(1);
     };
-
-    let Some(file_path) = args.get(2) else {
-        return eprintln!("Please provide a filename as the second argument");
-    };
-
-    let Ok(content) = fs::read_to_string(file_path) else {
-        return eprintln!("Error parsing the file");
-    };
-
-    println!("{content}");
 }
