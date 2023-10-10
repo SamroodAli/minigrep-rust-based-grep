@@ -15,7 +15,7 @@ impl Config {
         const IGNORE_CASE: &str = "IGNORE_CASE";
 
         // ignore the first command argument ( name of the program )
-        args.next();
+        let _ = args.next();
 
         let query: String = args.next().expect("Didn't get a query string");
         let file_path: String = args.next().expect("Didn't get a file path");
